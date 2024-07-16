@@ -1,0 +1,58 @@
+<html>
+<body>
+<h1>Publish the ASP.NET Core App to IIS</h1>
+<h2>Prerequisites</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/core/sdk">.NET Core SDK</a> installed on the development machine.</li>
+<li>Windows Server configured with the <strong>Web Server (IIS)</strong> server role. If your server isn't configured to host websites with IIS, follow the guidance in the <em>IIS configuration</em> section of the <a href="https://learn.microsoft.com/en-us/aspnet/core/tutorials/publish-to-iis?view=aspnetcore-6.0&tabs=netcore-cli">Host ASP.NET Core on Windows with IIS</a> article and then return to this tutorial.</li>
+</ul>
+<h2>Install the .NET Core Hosting Bundle</h2>
+<p>Install the <em>.NET Core Hosting Bundle</em> on the IIS server. The bundle installs the .NET Core Runtime, .NET Core Library, and the <a href="https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/aspnet-core-module?view=aspnetcore-6.0">ASP.NET Core Module</a>. The module allows ASP.NET Core apps to run behind IIS.</p>
+<p>Download the installer using the following link:</p>
+<p><a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-6.0.32-windows-hosting-bundle-installer">.NET Core Hosting Bundle installer (direct download)</a></p>
+<ol>
+<li>Run the installer on the IIS server.</li>
+<li>Restart the server or execute <code>net stop was /y</code> followed by <code>net start w3svc</code> in a command shell.</li>
+</ol>
+<h2>Create the IIS site</h2>
+<ol>
+<li>
+<p>On the IIS server, create a folder to contain the app's published folders and files. In a following step, the folder's path is provided to IIS as the physical path to the app. For more information on an app's deployment folder and file layout, see <a href="https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/directory-structure?view=aspnetcore-5.0">ASP.NET Core directory structure</a>.</p>
+</li>
+<li>
+<p>In IIS Manager, open the server's node in the <strong>Connections</strong> panel. Right-click the <strong>Sites</strong> folder. Select <strong>Add Website</strong> from the contextual menu.</p>
+</li>
+<li>
+<p>Provide a <strong>Site name</strong> and set the <strong>Physical path</strong> to the app's deployment folder that you created. Provide the <strong>Binding</strong> configuration using (<code>https://*:443/</code> and <code>https://+:443</code>) and create the website by selecting <strong>OK</strong>.</p>
+</li>
+<li>
+<p>Confirm the process model identity has the proper permissions.</p>
+<p>If the default identity of the app pool (<strong>Process Model</strong> &gt; <strong>Identity</strong>) is changed from <code>ApplicationPoolIdentity</code> to another identity, verify that the new identity has the required permissions to access the app's folder, database, and other required resources. For example, the app pool requires read and write access to folders where the app reads and writes files.</p>
+</li>
+</ol>
+<h1>Publication</h1>
+<p>We need to publish and copy the current application to the <strong>Physical path</strong> that we selected and configured during the creation of IIS Web Site.</p>
+<blockquote>
+<p><strong>Note:</strong> Before starting to publish, this directory must exist.</p>
+</blockquote>
+<h2>Publish the Host</h2>
+<p>You can automatically publish and copy the host by running the Power Shell Script in the path <em>$'{solution directory path}\build'</em>:</p>
+<pre><code>.\build-with-iss
+</code></pre>
+<p>Next, the current prompt should appear:</p>
+<pre><code>Input your absolute physical directory path to publish:
+</code></pre>
+<p>Then, we must type the <em>defined</em> <strong>Physical path</strong>. After that we can request the host locally in <a href="https://localhost/swagger/index.html">Swagger Definition</a>.</p>
+<blockquote>
+<p><strong>Note:</strong> We need to refresh or restart IIS Manager.</p>
+</blockquote>
+<h2>Update a publication</h2>
+<p>Delete optionally the content of the <em>current</em> <strong>Physical path</strong> and <strong>re-run</strong> the Power Shell Script:</p>
+<pre><code>.\build-with-iss
+</code></pre>
+<p>Now, introduce the <em>same</em> or a <em>new</em> <strong>Physical path</strong> previously selected and configured during the creation of IIS Web Site.</p>
+<blockquote>
+<p><strong>Note:</strong> We need to refresh or restart IIS Manager.</p>
+</blockquote>
+</body>
+</html>
