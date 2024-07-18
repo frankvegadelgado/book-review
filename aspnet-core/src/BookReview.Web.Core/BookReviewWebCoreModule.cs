@@ -48,6 +48,9 @@ namespace BookReview
                  );
 
             ConfigureTokenAuth();
+
+            Configuration.Modules.AbpAspNetCore().DefaultWrapResultAttribute.WrapOnSuccess = false;
+            Configuration.Modules.AbpAspNetCore().DefaultWrapResultAttribute.WrapOnError = false;
         }
 
         private void ConfigureTokenAuth()
