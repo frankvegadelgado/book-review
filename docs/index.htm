@@ -35,24 +35,23 @@
 <h2>Create the user <strong>bookreview</strong> with SSMS</h2>
 <ol>
 <li>
-<p>In Object Explorer, expand the Databases folder.</p>
+<p>In Object Explorer, expand the Security folder.</p>
 </li>
 <li>
-<p>Expand the database in which to create the new database user.</p>
+<p>Right-click the Login folder and select New Login</p>
 </li>
 <li>
-<p>Right-click the Security folder, point to New, and select User....</p>
+<p>In the Login - New dialog box, on the General page, select the option <strong>SQL Server authentication</strong> and uncheck the <strong>Enforce password policy</strong>.</p>
 </li>
 <li>
-<p>In the Database User - New dialog box, on the General page, select one of the following user types from the User type list:</p>
-<p>. SQL user with password (when contained database is enabled)</p>
-</li>
-<li>
-<p>When you select an option, the remaining options in the dialog may change. Some options only apply to specific types of database users. Some options can be left blank and will use a default value.</p>
+<p>When you select an option, the remaining options in the dialog may change. Some options can be left blank and will use a default value.</p>
 <p><strong>Login name</strong></p>
 <p>Enter the login for the user. Use <strong>bookreview</strong> login name.</p>
 <p><strong>Password and Confirm password</strong></p>
 <p>Enter a password for users who authenticate at the database. Use <strong>b00kr3v13w</strong> password.</p>
+</li>
+<li>
+<p>Select page <strong>Server Roles</strong> and check the roles <em>public</em> and <em>dbcreator</em>.</p>
 </li>
 <li>
 <p>Select OK.</p>

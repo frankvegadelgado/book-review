@@ -29,17 +29,13 @@ Download the installer using the following link:
 
 ## Create the user **bookreview** with SSMS
 
-1. In Object Explorer, expand the Databases folder.
+1. In Object Explorer, expand the Security folder.
 
-2. Expand the database in which to create the new database user.
+2. Right-click the Login folder and select New Login
 
-3. Right-click the Security folder, point to New, and select User....
+3. In the Login - New dialog box, on the General page, select the option **SQL Server authentication** and uncheck the **Enforce password policy**.
 
-4. In the Database User - New dialog box, on the General page, select one of the following user types from the User type list:
-
-   . SQL user with password (when contained database is enabled)
-
-5. When you select an option, the remaining options in the dialog may change. Some options only apply to specific types of database users. Some options can be left blank and will use a default value.
+4. When you select an option, the remaining options in the dialog may change. Some options can be left blank and will use a default value.
 
    **Login name**
 
@@ -48,6 +44,8 @@ Download the installer using the following link:
    **Password and Confirm password**
 
    Enter a password for users who authenticate at the database. Use **b00kr3v13w** password.
+
+5. Select page **Server Roles** and check the roles _public_ and _dbcreator_.
 
 6. Select OK.
 
