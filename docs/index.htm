@@ -3,11 +3,66 @@
 <title>Book Review</title>
 </head>
 <body>
+<h1>SQL Server Database Prerequisites</h1>
+<h2>Install Microsoft SQL Server 2019 Express</h2>
+<p>Download the installer using the following link:</p>
+<p><a href="https://www.microsoft.com/en-us/download/details.aspx?id=101064">Microsoft SQL Server 2019 Express installer</a></p>
+<ol>
+<li>Enter the default language of the user. Select <strong>English</strong> language</li>
+<li>Run the installer on the Windows OS.</li>
+</ol>
+<h2>Download SQL Server Management Studio (SSMS)</h2>
+<p>Download the installer using the following link:</p>
+<p><a href="https://aka.ms/ssmsfullsetup">Download SQL Server Management Studio (SSMS) 20.2 (direct download)</a></p>
+<ol>
+<li>Run the installer on the Windows OS.</li>
+</ol>
+<h2>Change authentication mode with SQL Server Management Studio</h2>
+<ol>
+<li>
+<p>In SQL Server Management Studio (SSMS) Object Explorer, right-click the server, and then select Properties.</p>
+</li>
+<li>
+<p>On the Security page, under Server authentication, select the new server authentication mode, and then select OK.</p>
+</li>
+<li>
+<p>In the SQL Server Management Studio dialog box, select OK to acknowledge the requirement to restart SQL Server.</p>
+</li>
+<li>
+<p>In Object Explorer, right-click your server, and then select Restart. If SQL Server Agent is running, it must also be restarted.</p>
+</li>
+</ol>
+<h2>Create the user <strong>bookreview</strong> with SSMS</h2>
+<ol>
+<li>
+<p>In Object Explorer, expand the Databases folder.</p>
+</li>
+<li>
+<p>Expand the database in which to create the new database user.</p>
+</li>
+<li>
+<p>Right-click the Security folder, point to New, and select User....</p>
+</li>
+<li>
+<p>In the Database User - New dialog box, on the General page, select one of the following user types from the User type list:</p>
+<p>. SQL user with password (when contained database is enabled)</p>
+</li>
+<li>
+<p>When you select an option, the remaining options in the dialog may change. Some options only apply to specific types of database users. Some options can be left blank and will use a default value.</p>
+<p><strong>Login name</strong></p>
+<p>Enter the login for the user. Use <strong>bookreview</strong> login name.</p>
+<p><strong>Password and Confirm password</strong></p>
+<p>Enter a password for users who authenticate at the database. Use <strong>b00kr3v13w</strong> password.</p>
+</li>
+<li>
+<p>Select OK.</p>
+</li>
+</ol>
 <h1>Publish the ASP.NET Core App to IIS</h1>
 <h2>Prerequisites</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/dotnet/core/sdk">.NET Core SDK</a> installed on the development machine.</li>
-<li>Windows Server configured with the <strong>Web Server (IIS)</strong> server role. If your server isn't configured to host websites with IIS, follow the guidance in the <em>IIS configuration</em> section of the <a href="https://learn.microsoft.com/en-us/aspnet/core/tutorials/publish-to-iis?view=aspnetcore-6.0&tabs=netcore-cli">Host ASP.NET Core on Windows with IIS</a> article and then return to this tutorial.</li>
+<li>Windows Server configured with the <strong>Web Server (IIS)</strong> server role. If your server isn't configured to host websites with IIS, follow the guidance in the <em>IIS configuration</em> section of the <a href="https://learn.microsoft.com/en-us/aspnet/core/tutorials/publish-to-iis?view=aspnetcore-6.0&amp;tabs=netcore-cli">Host ASP.NET Core on Windows with IIS</a> article and then return to this tutorial.</li>
 </ul>
 <h2>Install the .NET Core Hosting Bundle</h2>
 <p>Install the <em>.NET Core Hosting Bundle</em> on the IIS server. The bundle installs the .NET Core Runtime, .NET Core Library, and the <a href="https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/aspnet-core-module?view=aspnetcore-6.0">ASP.NET Core Module</a>. The module allows ASP.NET Core apps to run behind IIS.</p>

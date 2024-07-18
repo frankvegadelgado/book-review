@@ -1,3 +1,56 @@
+# SQL Server Database Prerequisites
+
+## Install Microsoft SQL Server 2019 Express
+
+Download the installer using the following link:
+
+[Microsoft SQL Server 2019 Express installer](https://www.microsoft.com/en-us/download/details.aspx?id=101064)
+
+1.  Enter the default language of the user. Select **English** language
+2.  Run the installer on the Windows OS.
+
+## Download SQL Server Management Studio (SSMS)
+
+Download the installer using the following link:
+
+[Download SQL Server Management Studio (SSMS) 20.2 (direct download)](https://aka.ms/ssmsfullsetup)
+
+1.  Run the installer on the Windows OS.
+
+## Change authentication mode with SQL Server Management Studio
+
+1. In SQL Server Management Studio (SSMS) Object Explorer, right-click the server, and then select Properties.
+
+2. On the Security page, under Server authentication, select the new server authentication mode, and then select OK.
+
+3. In the SQL Server Management Studio dialog box, select OK to acknowledge the requirement to restart SQL Server.
+
+4. In Object Explorer, right-click your server, and then select Restart. If SQL Server Agent is running, it must also be restarted.
+
+## Create the user **bookreview** with SSMS
+
+1. In Object Explorer, expand the Databases folder.
+
+2. Expand the database in which to create the new database user.
+
+3. Right-click the Security folder, point to New, and select User....
+
+4. In the Database User - New dialog box, on the General page, select one of the following user types from the User type list:
+
+   . SQL user with password (when contained database is enabled)
+
+5. When you select an option, the remaining options in the dialog may change. Some options only apply to specific types of database users. Some options can be left blank and will use a default value.
+
+   **Login name**
+
+   Enter the login for the user. Use **bookreview** login name.
+
+   **Password and Confirm password**
+
+   Enter a password for users who authenticate at the database. Use **b00kr3v13w** password.
+
+6. Select OK.
+
 # Publish the ASP.NET Core App to IIS
 
 ## Prerequisites
