@@ -10,7 +10,7 @@ namespace BookReview
 
         public const bool MultiTenancyEnabled = false;
 
-
+        public const int MaxNameLength = 128;
         /// <summary>
         /// Default pass phrase for SimpleStringCipher decrypt/encrypt operations
         /// </summary>
