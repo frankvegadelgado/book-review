@@ -44,30 +44,18 @@ namespace BookReview.Usuarios
             _abpSession = abpSession;
             _suscripcionRepository = suscripcionRepository;
         }
-        /*
-        public override async Task<UserDto> CreateAsync(CreateUsuarioDto input)
+        
+        public override async Task<UsuarioDto> CreateAsync(CreateUsuarioDto input)
         {
-            CheckCreatePermission();
+            var user = ObjectMapper.Map<Usuario>(input);
 
-            var user = ObjectMapper.Map<User>(input);
-
-            user.TenantId = AbpSession.TenantId;
-            user.IsEmailConfirmed = true;
-
-            await _userManager.InitializeOptionsAsync(AbpSession.TenantId);
-
-            CheckErrors(await _userManager.CreateAsync(user, input.Password));
-
-            if (input.RoleNames != null)
-            {
-                CheckErrors(await _userManager.SetRolesAsync(user, input.RoleNames));
-            }
+            user.Id = Guid.NewGuid();
 
             CurrentUnitOfWork.SaveChanges();
 
             return MapToEntityDto(user);
         }
-
+        /*
         public override async Task<UserDto> UpdateAsync(UserDto input)
         {
             CheckUpdatePermission();
