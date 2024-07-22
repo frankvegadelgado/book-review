@@ -3,9 +3,14 @@
   <texts>
 
     <text name="UserError" value="User error" />
-	<text name="UserNotFound" value="User not found" />  
-	  
-    <text name="HomePage" value="Home page" />
+	<text name="UserNotFound" value="User not found" />
+	<text name="AuthorError" value="Author error" />
+	<text name="AuthorNotFound" value="Author not found" />
+	<text name="SupscriptionError" value="Supscription error" />
+	<text name="SupscriptionNotFound" value="Supscription not found" />
+	<text name="SupscriptionFound" value="Supscription already exists" />
+
+	  <text name="HomePage" value="Home page" />
     <text name="About" value="About" />
     <text name="WelcomeMessage" value="Welcome to BookReview!" />
     <text name="FormIsNotValidMessage" value="Form is not valid. Please check and fix errors." />

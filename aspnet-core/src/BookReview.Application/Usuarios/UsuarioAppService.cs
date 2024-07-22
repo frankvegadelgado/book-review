@@ -87,6 +87,67 @@ namespace BookReview.Usuarios
             await Repository.DeleteAsync(user);
         }
 
+        public async Task Subscribe(Guid userId, int authorId)
+        {
+            var user = await Repository.GetAsync(userId);
+
+            if (user == null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("UserNotFound"));
+            }
+
+            var author = await _autorRepository.GetAsync(authorId);
+
+            if (author == null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("AuthorError"), L("AuthorNotFound"));
+            }
+
+            var supscription = await _suscripcionRepository.FirstOrDefaultAsync(s => s.Autor.Id == author.Id && s.Usuario.Id == user.Id);
+
+            if (supscription != null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.Found, L("SupscriptionError"), L("SupscriptionFound"));
+            }
+            else 
+            {
+                supscription = new Suscripcion
+                {
+                    Autor = author,
+                    Usuario = user,
+                };
+            }
+
+
+            await _suscripcionRepository.InsertAsync(supscription);
+        }
+
+        public async Task UnSubscribe(Guid userId, int authorId)
+        {
+            var user = await Repository.GetAsync(userId);
+
+            if (user == null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("UserNotFound"));
+            }
+
+            var author = await _autorRepository.GetAsync(authorId);
+
+            if (author == null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("AuthorError"), L("AuthorNotFound"));
+            }
+
+            var supscription = await _suscripcionRepository.FirstOrDefaultAsync(s => s.Autor.Id == author.Id && s.Usuario.Id == user.Id);
+
+            if (supscription == null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("SupscriptionError"), L("SupscriptionNotFound"));
+            }
+
+            await _suscripcionRepository.DeleteAsync(supscription);
+        }
+
         /*
         public override async Task<UserDto> UpdateAsync(UserDto input)
         {

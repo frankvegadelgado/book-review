@@ -11,6 +11,8 @@ namespace BookReview.Usuarios
     {
         Task ChangeImageUrl(Guid userId, ChangeUsuarioImagenDto input);
         Task DeleteById(Guid userId);
+        Task Subscribe(Guid userId, int authorId);
+        Task UnSubscribe(Guid userId, int authorId);
         /*
         Task DeActivate(EntityDto<long> user);
         Task Activate(EntityDto<long> user);
