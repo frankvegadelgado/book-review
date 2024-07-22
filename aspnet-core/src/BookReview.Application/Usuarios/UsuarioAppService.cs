@@ -75,6 +75,18 @@ namespace BookReview.Usuarios
 
         }
 
+        public async Task DeleteById(Guid userId)
+        {
+            var user = await Repository.GetAsync(userId);
+
+            if (user == null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("UserNotFound"));
+            }
+
+            await Repository.DeleteAsync(user);
+        }
+
         /*
         public override async Task<UserDto> UpdateAsync(UserDto input)
         {

@@ -10,6 +10,7 @@ namespace BookReview.Usuarios
     public interface IUsuarioAppService : IAsyncCrudAppService<UsuarioDto, Guid, PagedUsuarioResultRequestDto, CreateUsuarioDto, UsuarioDto>
     {
         Task ChangeImageUrl(Guid userId, ChangeUsuarioImagenDto input);
+        Task DeleteById(Guid userId);
         /*
         Task DeActivate(EntityDto<long> user);
         Task Activate(EntityDto<long> user);
