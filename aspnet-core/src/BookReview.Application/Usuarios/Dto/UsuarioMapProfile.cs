@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BookReview.Authorization.Users;
 
 namespace BookReview.Usuarios.Dto
 {
@@ -7,9 +6,11 @@ namespace BookReview.Usuarios.Dto
     {
         public UsuarioMapProfile()
         {
-            CreateMap<UsuarioDto, User>();
-            
-            CreateMap<CreateUsuarioDto, User>();
+            CreateMap<UsuarioDto, Usuario>().ForMember(x => x.TotalAutores, opt => opt.Ignore());
+
+            CreateMap<CreateUsuarioDto, Usuario>().ForMember(x => x.TotalAutores, opt => opt.Ignore());
+
+            CreateMap<UsuarioQueryDto, Usuario>();
         }
     }
 }

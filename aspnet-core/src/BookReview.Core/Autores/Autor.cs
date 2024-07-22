@@ -4,6 +4,7 @@ using BookReview.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,17 @@ namespace BookReview.Autores
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
+
+        public List<Usuario> Usuarios { get; }
+
+        [NotMapped]
+        public int TotalUsuarios
+        {
+            get
+            {
+                return Usuarios.Count;
+            }
+        }
 
     }
 }

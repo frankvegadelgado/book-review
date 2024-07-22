@@ -32,6 +32,11 @@ namespace BookReview.EntityFrameworkCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.Autores)
+                .WithMany(e => e.Usuarios)
+                .UsingEntity<Suscripcion>();
+
             base.OnModelCreating(modelBuilder);
         }
 

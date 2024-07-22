@@ -7,7 +7,7 @@ using Abp.AutoMapper;
 namespace BookReview.Usuarios.Dto
 {
     [AutoMapFrom(typeof(Usuario))]
-    public class UsuarioDto : EntityDto<Guid>
+    public class UsuarioQueryDto : EntityDto<Guid>
     {
 
         [Required]
@@ -22,5 +22,8 @@ namespace BookReview.Usuarios.Dto
         [Url]
         public string ImagenEnlace { get; set; }
 
+        public DateTime CreationTime { get; set; }
+
+        public int TotalAutores { get; set; }
     }
 }
