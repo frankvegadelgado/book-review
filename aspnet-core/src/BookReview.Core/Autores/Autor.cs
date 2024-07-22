@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using BookReview.Suscripciones;
 using BookReview.Usuarios;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,10 @@ namespace BookReview.Autores
         [Required]
         public string Nacionalidad { get; set; }
 
+        [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
 
-        public List<Usuario> Usuarios { get; }
     }
 }

@@ -39,18 +39,18 @@ namespace BookReview.Libros
 
         public List<Review> Reviews { get; }
 
-        [NotMapped]
-        public LibroClasificacion Calificacion
+        [Required]
+        public LibroClasificacion Calificacion { get; set; }
+        /*
+        public LibroClasificacion CalculateCalificacion()
         {
-            get
-            {
-                var rankings = Reviews.Select(x => (int)x.Calificacion).ToList();
-                var average = rankings.Average();
-                var integerValue = Math.Round(average);
-                return (LibroClasificacion)integerValue;
-            }
-        }
+            var rankings = Reviews.Select(x => (int)x.Calificacion).ToList();
+            var average = rankings.Average();
+            var integerValue = Math.Round(average);
+            return (LibroClasificacion)integerValue;
 
+        }
+        */
         
     }
 }

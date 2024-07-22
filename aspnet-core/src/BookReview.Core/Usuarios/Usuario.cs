@@ -15,13 +15,13 @@ namespace BookReview.Usuarios
         [Required]
         public string Nombre { get; set; }
 
+        [Required]
         [EmailAddress]
         public string Correo { get; set; }
 
         [Url]
         public string ImagenEnlace { get; set; }
 
-        public List<Autor> Autores { get; }
     }
 
 }
