@@ -6,11 +6,15 @@ namespace BookReview.Usuarios.Dto
     {
         public UsuarioMapProfile()
         {
-            CreateMap<UsuarioDto, Usuario>().ForMember(x => x.TotalAutores, opt => opt.Ignore());
+            CreateMap<UsuarioDto, Usuario>()
+                .ForMember(x => x.Autores, opt => opt.Ignore())
+                .ForMember(x => x.TotalAutores, opt => opt.Ignore());
 
-            CreateMap<CreateUsuarioDto, Usuario>().ForMember(x => x.TotalAutores, opt => opt.Ignore());
+            CreateMap<CreateUsuarioDto, Usuario>()
+                .ForMember(x => x.Autores, opt => opt.Ignore())
+                .ForMember(x => x.TotalAutores, opt => opt.Ignore());
 
-            CreateMap<UsuarioQueryDto, Usuario>();
+            CreateMap<UsuarioQueryDto, Usuario>().ForMember(x => x.Autores, opt => opt.Ignore());
         }
     }
 }

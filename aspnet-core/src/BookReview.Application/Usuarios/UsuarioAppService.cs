@@ -35,17 +35,14 @@ namespace BookReview.Usuarios
     {
         private readonly IRepository<Autor> _autorRepository;
         private readonly IRepository<Suscripcion> _suscripcionRepository;
-        private readonly IAbpSession _abpSession;
         
         public UsuarioAppService(
             IRepository<Usuario, Guid> repository,
             IRepository<Autor> autorRepository,
-            IRepository<Suscripcion> suscripcionRepository,
-            IAbpSession abpSession)
+            IRepository<Suscripcion> suscripcionRepository)
             : base(repository)
         {
             _autorRepository = autorRepository;
-            _abpSession = abpSession;
             _suscripcionRepository = suscripcionRepository;
         }
         
@@ -56,6 +53,8 @@ namespace BookReview.Usuarios
             user.Id = Guid.NewGuid();
 
             user.CreationTime = DateTime.Now;
+
+            await Repository.InsertAsync(user);
 
             CurrentUnitOfWork.SaveChanges();
 
@@ -75,6 +74,8 @@ namespace BookReview.Usuarios
 
             await Repository.UpdateAsync(user);
 
+            CurrentUnitOfWork.SaveChanges();
+
         }
 
         public async Task DeleteById(Guid userId)
@@ -87,6 +88,8 @@ namespace BookReview.Usuarios
             }
 
             await Repository.DeleteAsync(user);
+
+            CurrentUnitOfWork.SaveChanges();
         }
 
         public async Task Subscribe(Guid userId, int authorId)
@@ -122,6 +125,8 @@ namespace BookReview.Usuarios
 
 
             await _suscripcionRepository.InsertAsync(supscription);
+
+            CurrentUnitOfWork.SaveChanges();
         }
 
         public async Task UnSubscribe(Guid userId, int authorId)
@@ -148,6 +153,8 @@ namespace BookReview.Usuarios
             }
 
             await _suscripcionRepository.DeleteAsync(supscription);
+
+            CurrentUnitOfWork.SaveChanges();
         }
 
         public PagedResultDto<UsuarioQueryDto> GetAllUsers(PagedUsuarioResultRequestDto input)

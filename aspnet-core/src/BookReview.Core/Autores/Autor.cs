@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using BookReview.Libros;
 using BookReview.Suscripciones;
 using BookReview.Usuarios;
 using System;
@@ -26,6 +27,8 @@ namespace BookReview.Autores
         public DateTime FechaNacimiento { get; set; }
 
         public List<Usuario> Usuarios { get; }
+
+        public List<Libro> Libros { get; }
 
         [NotMapped]
         public int TotalUsuarios
