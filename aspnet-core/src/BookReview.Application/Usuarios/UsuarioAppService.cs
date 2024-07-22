@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Abp.Application.Services;
@@ -15,9 +16,12 @@ using Abp.Localization;
 using Abp.Runtime.Session;
 using Abp.UI;
 using BookReview.Authorization;
+using BookReview.Authorization.Users;
 using BookReview.Autores;
+using BookReview.Exceptions;
 using BookReview.Exceptions.Filter;
 using BookReview.Suscripciones;
+using BookReview.Users.Dto;
 using BookReview.Usuarios.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +59,22 @@ namespace BookReview.Usuarios
 
             return MapToEntityDto(user);
         }
+
+        public async Task ChangeImageUrl(Guid userId, [FromBody] ChangeUsuarioImagenDto input)
+        {
+            var user = await Repository.GetAsync(userId);
+
+            if (user == null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("UserNotFound"));
+            }
+
+            user.ImagenEnlace = input.ImagenEnlace; 
+
+            await Repository.UpdateAsync(user);
+
+        }
+
         /*
         public override async Task<UserDto> UpdateAsync(UserDto input)
         {
