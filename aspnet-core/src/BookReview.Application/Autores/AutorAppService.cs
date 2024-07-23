@@ -71,7 +71,14 @@ namespace BookReview.Autores
                 throw new ErrorResponseException(HttpStatusCode.NotFound, L("AuthorError"), L("AuthorNotFound"));
             }
 
-            var book = ObjectMapper.Map<Libro>(input);
+            var book = await _libroRepository.FirstOrDefaultAsync(b => b.ISBN == input.ISBN);
+
+            if (book != null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.Found, L("BookError"), L("BookFound"));
+            }
+
+            book = ObjectMapper.Map<Libro>(input);
 
             book.Autor = author;
 
@@ -122,7 +129,7 @@ namespace BookReview.Autores
         [Route("authors/{authorId}")]
         public async Task<AutorQueryDto> GetByIdAsync([FromRoute] int authorId)
         {
-            var author = await Repository.GetAsync(authorId);
+            var author = await Repository.GetAllIncluding(x => x.Usuarios, x => x.Libros).FirstOrDefaultAsync(a => a.Id == authorId);
 
             if (author == null)
             {

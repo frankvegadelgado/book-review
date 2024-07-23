@@ -10,16 +10,10 @@ namespace BookReview.Usuarios.Dto
     public class UsuarioQueryDto : EntityDto<Guid>
     {
 
-        [Required]
-        [StringLength(AbpUserBase.MaxNameLength)]
         public string Nombre { get; set; }
 
-        [Required]
-        [EmailAddress]
-        [StringLength(AbpUserBase.MaxEmailAddressLength)]
         public string Correo { get; set; }
 
-        [Url]
         public string ImagenEnlace { get; set; }
 
         public DateTime CreationTime { get; set; }

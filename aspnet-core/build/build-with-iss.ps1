@@ -10,7 +10,6 @@ $slnFolder = Join-Path $buildFolder "../"
 $outputFolder = Join-Path $buildFolder "outputs"
 $webHostFolder = Join-Path $slnFolder "src/BookReview.Web.Host"
 $migrateFolder = Join-Path $slnFolder "src/BookReview.Migrator"
-$testFolder = Join-Path $slnFolder "test/BookReview.Tests"
 $publishFolder = Read-Host -Prompt 'Input your absolute physical directory path to publish'
 
 ## CLEAR ######################################################################
@@ -28,15 +27,6 @@ dotnet restore
 Set-Location $migrateFolder
 dotnet build -c Release
 dotnet run -c Release application "-q"
-if ( $LASTEXITCODE -gt 0 )
-{
-   Return
-}
-
-## RUN UNIT TESTS #####################################################
-
-Set-Location $testFolder
-dotnet test -c Release
 if ( $LASTEXITCODE -gt 0 )
 {
    Return

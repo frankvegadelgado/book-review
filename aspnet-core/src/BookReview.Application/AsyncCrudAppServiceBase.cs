@@ -14,6 +14,7 @@ namespace BookReview
         protected AsyncCrudAppServiceBase(IRepository<TEntity, TPrimaryKey> repository)
             : base(repository)
         {
+            LocalizationSourceName = BookReviewConsts.LocalizationSourceName;
         }
 
         protected override string GetPermissionName { get => base.GetPermissionName; set => base.GetPermissionName = value; }

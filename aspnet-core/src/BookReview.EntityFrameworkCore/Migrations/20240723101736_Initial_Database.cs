@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookReview.Migrations
 {
-    public partial class CreateDatabaseModel : Migration
+    public partial class Initial_Database : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,20 +49,20 @@ namespace BookReview.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titulo = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    AutorId = table.Column<int>(type: "int", nullable: false),
                     Editorial = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaginasTotal = table.Column<int>(type: "int", nullable: false),
                     FechaPublicacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EnlaceDescarga = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EnlaceDescarga = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Calificacion = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Libros", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Libros_Autores_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_Libros_Autores_AutorId",
+                        column: x => x.AutorId,
                         principalTable: "Autores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -122,9 +122,9 @@ namespace BookReview.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Libros_AuthorId",
+                name: "IX_Libros_AutorId",
                 table: "Libros",
-                column: "AuthorId");
+                column: "AutorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_LibroId",

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookReview.Migrations
 {
     [DbContext(typeof(BookReviewDbContext))]
-    [Migration("20240723041510_AddRenameFields")]
-    partial class AddRenameFields
+    [Migration("20240723101736_Initial_Database")]
+    partial class Initial_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

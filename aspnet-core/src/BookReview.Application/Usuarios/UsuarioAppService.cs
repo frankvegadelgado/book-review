@@ -4,29 +4,16 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
-using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
-using Abp.Extensions;
-using Abp.IdentityFramework;
-using Abp.Linq.Extensions;
-using Abp.Localization;
-using Abp.Runtime.Session;
-using Abp.UI;
-using BookReview.Authorization;
-using BookReview.Authorization.Users;
 using BookReview.Autores;
 using BookReview.Exceptions;
 using BookReview.Exceptions.Filter;
 using BookReview.Suscripciones;
-using BookReview.Users.Dto;
 using BookReview.Usuarios.Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookReview.Usuarios
 {
@@ -57,7 +44,7 @@ namespace BookReview.Usuarios
 
             if (user != null)
             {
-                throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("EmailFound"));
+                throw new ErrorResponseException(HttpStatusCode.Found, L("UserError"), L("EmailFound"));
             }
 
             user = ObjectMapper.Map<Usuario>(input);
