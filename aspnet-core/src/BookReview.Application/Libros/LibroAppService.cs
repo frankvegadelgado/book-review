@@ -95,7 +95,7 @@ namespace BookReview.Libros
         [Route("books/{bookId}/reviews/from/users/{userId}")]
         public async Task AddReviewAsync([FromRoute] int bookId, [FromRoute] Guid userId, [FromBody] CreateReviewDto input)
         {
-            var book = await Repository.GetAsync(bookId);
+            var book = await Repository.GetAllIncluding(x => x.Reviews).FirstOrDefaultAsync(b => b.Id == bookId);
 
             if (book == null)
             {
@@ -109,7 +109,7 @@ namespace BookReview.Libros
                 throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("UserNotFound"));
             }
                         
-            var review = await _reviewRepository.FirstOrDefaultAsync(s => s.Libro.Id == book.Id && s.Usuario.Id == user.Id);
+            var review = await _reviewRepository.GetAllIncluding(x => x.Usuario, x => x.Libro).FirstOrDefaultAsync(s => s.Libro.Id == book.Id && s.Usuario.Id == user.Id);
 
             if (review != null)
             {
