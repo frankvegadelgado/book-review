@@ -18,14 +18,14 @@ namespace BookReview.Libros
             [FromQuery] string editorialName,
             [FromQuery] DateTime? before,
             [FromQuery] DateTime? after,
-            [FromQuery] int offset,
-            [FromQuery] int limit,
-            [FromQuery] bool? sort);
+            [FromQuery] bool? sort,
+            [FromQuery] int offset = 0,
+            [FromQuery] int limit = 50);
 
         ListResultDto<ReviewQueryDto> GetAllReviews([FromRoute] int bookId,
             [FromQuery, Range(1, 5)] int? reviewType,
             [FromQuery] bool? sort,
-            [FromQuery] int offset,
-            [FromQuery] int limit);
+            [FromQuery] int offset = 0,
+            [FromQuery] int limit = 50);
     }
 }

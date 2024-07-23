@@ -59,13 +59,13 @@ namespace BookReview.Libros
             [FromQuery] string editorialName,
             [FromQuery] DateTime? before,
             [FromQuery] DateTime? after,
-            [FromQuery] int offset,
-            [FromQuery] int limit,
-            [FromQuery] bool? sort)
+            [FromQuery] bool? sort,
+            [FromQuery] int offset = 0,
+            [FromQuery] int limit = 50)
         {
             var bookQuery = Repository.GetAllIncluding(x => x.Autor)
                 .WhereIf(authorId.HasValue, x => x.Autor.Id == authorId.Value)
-                .WhereIf(!string.IsNullOrEmpty(editorialName), x => x.Editorial.Contains(editorialName))
+                .WhereIf(!string.IsNullOrEmpty(editorialName), x => x.Editorial == editorialName)
                 .WhereIf(after.HasValue, x => x.FechaPublicacion >= after.Value)
                 .WhereIf(before.HasValue, x => x.FechaPublicacion <= before.Value)
                 .Skip(offset).Take(limit);
@@ -79,8 +79,8 @@ namespace BookReview.Libros
         public ListResultDto<ReviewQueryDto> GetAllReviews([FromRoute] int bookId,
             [FromQuery, Range(1, 5)] int? reviewType,
             [FromQuery] bool? sort,
-            [FromQuery] int offset,
-            [FromQuery] int limit)
+            [FromQuery] int offset = 0,
+            [FromQuery] int limit = 50)
         {
             var reviewQuery = _reviewRepository.GetAllIncluding(x => x.Libro, x => x.Usuario)
                 .Where(x => x.Libro.Id == bookId)

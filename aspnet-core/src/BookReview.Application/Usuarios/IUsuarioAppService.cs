@@ -15,7 +15,7 @@ namespace BookReview.Usuarios
         Task DeleteByIdAsync([FromRoute] Guid userId);
         Task SubscribeAsync([FromRoute] Guid userId, [FromRoute] int authorId);
         Task UnSubscribeAsync([FromRoute] Guid userId, [FromRoute] int authorId);
-        PagedResultDto<UsuarioQueryDto> GetAllUsers([FromQuery] int offset, [FromQuery] int limit);
+        PagedResultDto<UsuarioQueryDto> GetAllUsers([FromQuery] int offset = 0, [FromQuery] int limit = 50);
 
         Task<UsuarioDto> CreateUserAsync(CreateUsuarioDto input);
     }

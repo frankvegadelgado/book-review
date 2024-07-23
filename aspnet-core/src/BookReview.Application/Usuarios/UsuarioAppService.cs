@@ -162,7 +162,7 @@ namespace BookReview.Usuarios
         }
         [HttpGet]
         [Route("users")]
-        public PagedResultDto<UsuarioQueryDto> GetAllUsers([FromQuery] int offset, [FromQuery] int limit)
+        public PagedResultDto<UsuarioQueryDto> GetAllUsers([FromQuery] int offset = 0, [FromQuery] int limit = 50)
         {
             var usersQuery = Repository.GetAllIncluding(x => x.Autores).Skip(offset).Take(limit);
             var users = (usersQuery.Any()) ? ObjectMapper.ProjectTo<UsuarioQueryDto>(usersQuery).ToList(): new List<UsuarioQueryDto>();
