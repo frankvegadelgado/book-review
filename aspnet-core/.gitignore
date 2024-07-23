@@ -254,3 +254,4 @@ paket-files/
 src/BookReview.Web.Mvc/secrets.json
 src/BookReview.Web.Host/secrets.json
 src/BookReview.Migrator/secrets.json
+build/outputs/
