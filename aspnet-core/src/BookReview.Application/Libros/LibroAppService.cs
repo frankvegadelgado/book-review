@@ -26,73 +26,33 @@ using BookReview.Reviews;
 using BookReview.Suscripciones;
 using BookReview.Usuarios;
 using BookReview.Usuarios.Correo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookReview.Libros
 {
+    [ApiExplorerSettings(GroupName = "v1")]
+    [AllowAnonymous]
+    [Route("api/v1.0/library/books")]
     [AbpAllowAnonymous]
     [TypeFilter(typeof(AppExceptionFilter))]
     public class LibroAppService : AsyncCrudAppService<Libro, LibroDto, int, PagedLibroResultRequestDto, CreateLibroDto, LibroDto>, ILibroAppService
     {
         private readonly IRepository<Usuario, Guid> _userRepository;
-        private readonly IRepository<Suscripcion> _suscripcionRepository;
-        private readonly IRepository<Autor> _autorRepository;
         private readonly IRepository<Review> _reviewRepository;
-        private readonly ICorreoSender _correoSender;
-
+        
         public LibroAppService(
             IRepository<Libro, int> repository,
             IRepository<Usuario, Guid> userRepository,
-            IRepository<Suscripcion> suscripcionRepository,
-            IRepository<Autor> autorRepository,
-            IRepository<Review> reviewRepository,
-            ICorreoSender correoSender)
+            IRepository<Review> reviewRepository)
             : base(repository)
         {
             _userRepository = userRepository;
-            _suscripcionRepository = suscripcionRepository;
-            _autorRepository = autorRepository;
             _reviewRepository = reviewRepository;
-            _correoSender = correoSender;
         }
 
-        public async Task<LibroDto> CreateByAuthorIdAsync(int authorId, [FromBody] CreateLibroDto input)
-        {
-            
-            var author = await _autorRepository.GetAsync(authorId);
-
-            if (author == null)
-            {
-                throw new ErrorResponseException(HttpStatusCode.NotFound, L("AuthorError"), L("AuthorNotFound"));
-            }
-
-            var book = ObjectMapper.Map<Libro>(input);
-
-            book.Autor = author;
-
-            book.Calificacion = Enums.LibroClasificacion.None;
-
-            await Repository.InsertAsync(book);
-
-            CurrentUnitOfWork.SaveChanges();
-
-            var users = _suscripcionRepository.GetAllIncluding(x => x.Autor, x => x.Usuario)
-                .Where(x => x.Autor.Id == author.Id)
-                .Select(x => x.Usuario)
-                .ToList();
-
-            //await NotifyByEmail(users);
-
-            return MapToEntityDto(book);
-        }
-        /*
-        protected async Task NotifyByEmail(List<Usuario> users)
-        {
-            Task.Run(users.ForEach(u => _correoSender.SendEmailNotificationAsync(u)))
-        }
-        */
-
+        
         public IQueryable<LibroQueryDto> GetAllBooks(PagedLibroResultRequestDto input)
         {
             var bookQuery = Repository.GetAllIncluding(x => x.Autor)

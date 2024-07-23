@@ -13,10 +13,12 @@ using BookReview.Authorization.Roles;
 using BookReview.Authorization.Users;
 using BookReview.Roles.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookReview.Roles
 {
+    [ApiExplorerSettings(GroupName = "v2")]
     [AbpAuthorize(PermissionNames.Pages_Roles)]
     public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedRoleResultRequestDto, CreateRoleDto, RoleDto>, IRoleAppService
     {

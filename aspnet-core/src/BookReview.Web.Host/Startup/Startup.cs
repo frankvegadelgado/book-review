@@ -20,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using Abp.AspNetCore.Mvc.Extensions;
 
 namespace BookReview.Web.Host.Startup
 {
@@ -27,7 +28,41 @@ namespace BookReview.Web.Host.Startup
     {
         private const string _defaultCorsPolicyName = "localhost";
 
-        private const string _apiVersion = "v1";
+        private const string _apiVersion1 = "v1";
+        private const string _apiVersion2 = "v2";
+
+        private string ApiVersion1
+        {
+            get
+            {
+                return _apiVersion1;
+            }
+        }
+
+        private string ApiVersion2
+        {
+            get
+            {
+                return _apiVersion2;
+            }
+        }
+
+        private string ApiVersionNumber1
+        {
+            get
+            {
+                return _apiVersion1.Replace("v", "");
+            }
+        }
+
+        private string ApiVersionNumber2
+        {
+            get
+            {
+                return _apiVersion2.Replace("v", "");
+            }
+        }
+
 
         private readonly IConfigurationRoot _appConfiguration;
         private readonly IWebHostEnvironment _hostingEnvironment;
@@ -74,6 +109,11 @@ namespace BookReview.Web.Host.Startup
                 )
             );
 
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+            });
+
             // Swagger - Enable this line and the related lines in Configure method to enable swagger UI
             ConfigureSwagger(services);
 
@@ -111,6 +151,7 @@ namespace BookReview.Web.Host.Startup
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
             });
 
+
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger(c => { c.RouteTemplate = "swagger/{documentName}/swagger.json"; });
 
@@ -118,21 +159,22 @@ namespace BookReview.Web.Host.Startup
             app.UseSwaggerUI(options =>
             {
                 // specifying the Swagger JSON endpoint.
-                options.SwaggerEndpoint($"/swagger/{_apiVersion}/swagger.json", $"BookReview API {_apiVersion}");
-                options.IndexStream = () => Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("BookReview.Web.Host.wwwroot.swagger.ui.index.html");
-                options.DisplayRequestDuration(); // Controls the display of the request duration (in milliseconds) for "Try it out" requests.  
+                options.SwaggerEndpoint($"/swagger/{ApiVersion1}/swagger.json", $"BookReview API {ApiVersion1}");
+                options.SwaggerEndpoint($"/swagger/{ApiVersion2}/swagger.json", $"BookReview API {ApiVersion2}");
+                options.DisplayRequestDuration(); // Controls the display of the request duration (in milliseconds) for "Try it out" requests.
+                options.RoutePrefix = "swagger";//string.Empty;
             }); // URL: /swagger
+
         }
         
         private void ConfigureSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc(_apiVersion, new OpenApiInfo
+                options.SwaggerDoc(ApiVersion1, new OpenApiInfo
                 {
-                    Version = _apiVersion,
-                    Title = "BookReview API",
+                    Version = ApiVersionNumber1,
+                    Title = $"BookReview API {ApiVersion1}",
                     Description = "BookReview",
                     // uncomment if needed TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
@@ -147,7 +189,44 @@ namespace BookReview.Web.Host.Startup
                         Url = new Uri("https://github.com/aspnetboilerplate/aspnetboilerplate/blob/dev/LICENSE"),
                     }
                 });
-                options.DocInclusionPredicate((docName, description) => true);
+
+                options.SwaggerDoc(ApiVersion2, new OpenApiInfo
+                {
+                    Version = ApiVersionNumber2,
+                    Title = $"BookReview API {ApiVersion2}",
+                    Description = "BookReview",
+                    // uncomment if needed TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "BookReview",
+                        Email = string.Empty,
+                        Url = new Uri("https://twitter.com/aspboilerplate"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://github.com/aspnetboilerplate/aspnetboilerplate/blob/dev/LICENSE"),
+                    }
+                });
+
+                options.DocInclusionPredicate((docName, apiDesc) =>
+                {
+                    if (!apiDesc.ActionDescriptor.IsControllerAction())
+                    {
+                        return false;
+                    }
+
+                    switch (docName)
+                    {
+                        case "v1":
+                            return apiDesc.GroupName == null || apiDesc.GroupName == ApiVersion1;
+                        case "v2":
+                            return apiDesc.GroupName == null || apiDesc.GroupName == ApiVersion2;
+                        default:
+                            return false;
+                    }
+                });
+
 
                 // Define the BearerAuth scheme that's in use
                 options.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme()
@@ -160,7 +239,7 @@ namespace BookReview.Web.Host.Startup
                 });
 
                 //add summaries to swagger
-                bool canShowSummaries = _appConfiguration.GetValue<bool>("Swagger:ShowSummaries");
+                /*bool canShowSummaries = _appConfiguration.GetValue<bool>("Swagger:ShowSummaries");
                 if (canShowSummaries)
                 {
                     var hostXmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -174,7 +253,7 @@ namespace BookReview.Web.Host.Startup
                     var webCoreXmlFile = $"BookReview.Web.Core.xml";
                     var webCoreXmlPath = Path.Combine(AppContext.BaseDirectory, webCoreXmlFile);
                     options.IncludeXmlComments(webCoreXmlPath);
-                }
+                }*/
             });
         }
     }

@@ -2,9 +2,11 @@
 using Abp.Authorization;
 using Abp.Runtime.Session;
 using BookReview.Configuration.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookReview.Configuration
 {
+    [ApiExplorerSettings(GroupName = "v2")]
     [AbpAuthorize]
     public class ConfigurationAppService : BookReviewAppServiceBase, IConfigurationAppService
     {

@@ -15,9 +15,11 @@ using BookReview.Authorization.Users;
 using BookReview.Editions;
 using BookReview.MultiTenancy.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookReview.MultiTenancy
 {
+    [ApiExplorerSettings(GroupName = "v2")]
     [AbpAuthorize(PermissionNames.Pages_Tenants)]
     public class TenantAppService : AsyncCrudAppService<Tenant, TenantDto, int, PagedTenantResultRequestDto, CreateTenantDto, TenantDto>, ITenantAppService
     {

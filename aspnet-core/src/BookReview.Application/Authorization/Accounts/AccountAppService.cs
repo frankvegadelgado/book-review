@@ -3,9 +3,11 @@ using Abp.Configuration;
 using Abp.Zero.Configuration;
 using BookReview.Authorization.Accounts.Dto;
 using BookReview.Authorization.Users;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookReview.Authorization.Accounts
 {
+    [ApiExplorerSettings(GroupName = "v2")]
     public class AccountAppService : BookReviewAppServiceBase, IAccountAppService
     {
         // from: http://regexlib.com/REDetails.aspx?regexp_id=1923

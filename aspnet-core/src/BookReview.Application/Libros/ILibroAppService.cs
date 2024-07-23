@@ -11,8 +11,6 @@ namespace BookReview.Libros
 {
     public interface ILibroAppService : IAsyncCrudAppService<LibroDto, int, PagedLibroResultRequestDto, CreateLibroDto, LibroDto>
     {
-        Task<LibroDto> CreateByAuthorIdAsync(int authorId, [FromBody] CreateLibroDto input);
-
         Task AddReviewAsync(int bookId, Guid userId, [FromBody] CreateReviewDto input);
 
         IQueryable<LibroQueryDto> GetAllBooks(PagedLibroResultRequestDto input);

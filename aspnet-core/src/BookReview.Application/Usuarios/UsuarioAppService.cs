@@ -23,12 +23,16 @@ using BookReview.Exceptions.Filter;
 using BookReview.Suscripciones;
 using BookReview.Users.Dto;
 using BookReview.Usuarios.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookReview.Usuarios
 {
+    [ApiExplorerSettings(GroupName = "v1")]
+    [AllowAnonymous]
+    [Route("api/v1.0/library/users")]
     [AbpAllowAnonymous]
     [TypeFilter(typeof(AppExceptionFilter))]
     public class UsuarioAppService : AsyncCrudAppService<Usuario, UsuarioDto, Guid, PagedUsuarioResultRequestDto, CreateUsuarioDto, UsuarioDto>, IUsuarioAppService

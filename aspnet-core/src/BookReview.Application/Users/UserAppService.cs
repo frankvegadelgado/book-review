@@ -21,10 +21,12 @@ using BookReview.Authorization.Users;
 using BookReview.Roles.Dto;
 using BookReview.Users.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookReview.Users
 {
+    [ApiExplorerSettings(GroupName = "v2")]
     [AbpAuthorize(PermissionNames.Pages_Users)]
     public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
     {

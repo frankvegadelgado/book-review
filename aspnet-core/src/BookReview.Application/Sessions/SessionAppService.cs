@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using Abp.Auditing;
 using BookReview.Sessions.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookReview.Sessions
 {
+    [ApiExplorerSettings(GroupName = "v2")]
     public class SessionAppService : BookReviewAppServiceBase, ISessionAppService
     {
         [DisableAuditing]
