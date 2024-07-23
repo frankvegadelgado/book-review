@@ -31,6 +31,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookReview.Usuarios.Correo;
+using System.Linq.Dynamic.Core.Tokenizer;
+using BookReview.Usuarios;
 
 namespace BookReview.Autores
 {
@@ -84,18 +86,27 @@ namespace BookReview.Autores
                 .Select(x => x.Usuario)
                 .ToList();
 
-            //await NotifyByEmail(users);
+            await NotifyByEmail(users);
 
             var bookDto = ObjectMapper.Map<LibroDto>(book);
 
             return bookDto;
         }
-        /*
-        protected async Task NotifyByEmail(List<Usuario> users)
+        
+        protected Task NotifyByEmail(List<Usuario> users)
         {
-            Task.Run(users.ForEach(u => _correoSender.SendEmailNotificationAsync(u)))
+
+            return Task.Run(Body);
+
+            async Task Body()
+            {
+                // This will await one task after another and so they're running sequential
+                foreach (var user in users)
+                    await _correoSender.SendEmailNotificationAsync(user);
+            }
+
         }
-        */
+
 
         [HttpPost]
         [Route("authors")]
