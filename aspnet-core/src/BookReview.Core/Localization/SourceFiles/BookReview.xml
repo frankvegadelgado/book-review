@@ -9,6 +9,10 @@
 	<text name="SupscriptionError" value="Supscription error" />
 	<text name="SupscriptionNotFound" value="Supscription not found" />
 	<text name="SupscriptionFound" value="Supscription already exists" />
+	<text name="EmailGreetings" value="Dear {0}," />
+	<text name="EmailBody" value="Hello World" />
+	<text name="EmailSubject" value="Notification Email" />
+
 
 	  <text name="HomePage" value="Home page" />
     <text name="About" value="About" />
