@@ -21,6 +21,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System.IO;
 using Abp.AspNetCore.Mvc.Extensions;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace BookReview.Web.Host.Startup
 {
@@ -171,6 +172,7 @@ namespace BookReview.Web.Host.Startup
         {
             services.AddSwaggerGen(options =>
             {
+               
                 options.SwaggerDoc(ApiVersion1, new OpenApiInfo
                 {
                     Version = ApiVersionNumber1,
@@ -227,7 +229,9 @@ namespace BookReview.Web.Host.Startup
                     }
                 });
 
+                options.DocumentFilter<AuthorizationDocumentFilter>();
 
+                /*
                 // Define the BearerAuth scheme that's in use
                 options.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme()
                 {
@@ -235,11 +239,11 @@ namespace BookReview.Web.Host.Startup
                         "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
+                    Type = SecuritySchemeType.ApiKey,
                 });
 
                 //add summaries to swagger
-                /*bool canShowSummaries = _appConfiguration.GetValue<bool>("Swagger:ShowSummaries");
+                bool canShowSummaries = _appConfiguration.GetValue<bool>("Swagger:ShowSummaries");
                 if (canShowSummaries)
                 {
                     var hostXmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
