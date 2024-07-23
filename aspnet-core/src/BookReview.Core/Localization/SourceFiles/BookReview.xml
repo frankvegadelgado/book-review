@@ -4,6 +4,7 @@
 
     <text name="UserError" value="User error" />
 	<text name="UserNotFound" value="User not found" />
+	<text name="EmailFound" value="Email address already exists" />  
 	<text name="AuthorError" value="Author error" />
 	<text name="AuthorNotFound" value="Author not found" />
 	<text name="BookError" value="Book error" />

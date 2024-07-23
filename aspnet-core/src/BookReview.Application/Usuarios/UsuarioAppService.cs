@@ -53,7 +53,14 @@ namespace BookReview.Usuarios
         [Route("users")]
         public async Task<UsuarioDto> CreateUserAsync(CreateUsuarioDto input)
         {
-            var user = ObjectMapper.Map<Usuario>(input);
+            var user = await Repository.FirstOrDefaultAsync(u => u.Correo == input.Correo);
+
+            if (user != null)
+            {
+                throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("EmailFound"));
+            }
+
+            user = ObjectMapper.Map<Usuario>(input);
 
             user.Id = Guid.NewGuid();
 
