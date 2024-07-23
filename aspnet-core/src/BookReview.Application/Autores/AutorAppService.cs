@@ -92,19 +92,16 @@ namespace BookReview.Autores
 
             return bookDto;
         }
-        
+
+        private IEnumerable<Task> NotifyUsersByEmail(List<Usuario> users)
+        {
+            foreach (var user in users)
+                yield return _correoSender.SendEmailNotificationAsync(user);
+        }
+
         protected Task NotifyByEmail(List<Usuario> users)
         {
-
-            return Task.Run(Body);
-
-            async Task Body()
-            {
-                // This will await one task after another and so they're running sequential
-                foreach (var user in users)
-                    await _correoSender.SendEmailNotificationAsync(user);
-            }
-
+            return Task.WhenAll(NotifyUsersByEmail(users));
         }
 
 
