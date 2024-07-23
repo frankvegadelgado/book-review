@@ -36,10 +36,10 @@ namespace BookReview.Autores
 {
     [ApiExplorerSettings(GroupName = "v1")]
     [AllowAnonymous]
-    [Route("api/v1.0/library/authors")]
+    [Route("api/v1.0/library")]
     [AbpAllowAnonymous]
     [TypeFilter(typeof(AppExceptionFilter))]
-    public class AutorAppService : AsyncCrudAppService<Autor, AutorDto, int, PagedAutorResultRequestDto, CreateAutorDto, AutorDto>, IAutorAppService
+    public class AutorAppService : AsyncCrudAppServiceBase<Autor, AutorDto, int, PagedAutorResultRequestDto, CreateAutorDto, AutorDto>, IAutorAppService
     {
         private readonly ICorreoSender _correoSender;
         private readonly IRepository<Suscripcion> _suscripcionRepository;
@@ -57,7 +57,9 @@ namespace BookReview.Autores
             _correoSender = correoSender;
         }
 
-        public async Task<LibroDto> CreateBookByAuthorIdAsync(int authorId, [FromBody] CreateLibroDto input)
+        [HttpPost]
+        [Route("authors/{authorId}/books")]
+        public async Task<LibroDto> CreateBookByAuthorIdAsync([FromRoute] int authorId, [FromBody] CreateLibroDto input)
         {
 
             var author = await Repository.GetAsync(authorId);
@@ -95,8 +97,9 @@ namespace BookReview.Autores
         }
         */
 
-
-        public override async Task<AutorDto> CreateAsync(CreateAutorDto input)
+        [HttpPost]
+        [Route("authors")]
+        public async Task<AutorDto> CreateAuthorAsync(CreateAutorDto input)
         {
             var author = ObjectMapper.Map<Autor>(input);
 
@@ -107,7 +110,9 @@ namespace BookReview.Autores
             return MapToEntityDto(author);
         }
 
-        public async Task<AutorQueryDto> GetByIdAsync(int authorId)
+        [HttpGet]
+        [Route("authors/{authorId}")]
+        public async Task<AutorQueryDto> GetByIdAsync([FromRoute] int authorId)
         {
             var author = await Repository.GetAsync(authorId);
 

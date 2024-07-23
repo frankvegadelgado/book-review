@@ -11,10 +11,12 @@ namespace BookReview.Usuarios
 {
     public interface IUsuarioAppService : IAsyncCrudAppService<UsuarioDto, Guid, PagedUsuarioResultRequestDto, CreateUsuarioDto, UsuarioDto>
     {
-        Task ChangeImageUrlAsync(Guid userId, [FromBody] ChangeUsuarioImagenDto input);
-        Task DeleteByIdAsync(Guid userId);
-        Task SubscribeAsync(Guid userId, int authorId);
-        Task UnSubscribeAsync(Guid userId, int authorId);
-        PagedResultDto<UsuarioQueryDto> GetAllUsers(PagedUsuarioResultRequestDto input);
+        Task ChangeImageUrlAsync([FromRoute] Guid userId, [FromBody] ChangeUsuarioImagenDto input);
+        Task DeleteByIdAsync([FromRoute] Guid userId);
+        Task SubscribeAsync([FromRoute] Guid userId, [FromRoute] int authorId);
+        Task UnSubscribeAsync([FromRoute] Guid userId, [FromRoute] int authorId);
+        PagedResultDto<UsuarioQueryDto> GetAllUsers([FromQuery] int offset, [FromQuery] int limit);
+
+        Task<UsuarioDto> CreateUserAsync(CreateUsuarioDto input);
     }
 }

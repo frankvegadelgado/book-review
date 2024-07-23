@@ -32,10 +32,10 @@ namespace BookReview.Usuarios
 {
     [ApiExplorerSettings(GroupName = "v1")]
     [AllowAnonymous]
-    [Route("api/v1.0/library/users")]
+    [Route("api/v1.0/library")]
     [AbpAllowAnonymous]
     [TypeFilter(typeof(AppExceptionFilter))]
-    public class UsuarioAppService : AsyncCrudAppService<Usuario, UsuarioDto, Guid, PagedUsuarioResultRequestDto, CreateUsuarioDto, UsuarioDto>, IUsuarioAppService
+    public class UsuarioAppService : AsyncCrudAppServiceBase<Usuario, UsuarioDto, Guid, PagedUsuarioResultRequestDto, CreateUsuarioDto, UsuarioDto>, IUsuarioAppService
     {
         private readonly IRepository<Autor> _autorRepository;
         private readonly IRepository<Suscripcion> _suscripcionRepository;
@@ -49,8 +49,9 @@ namespace BookReview.Usuarios
             _autorRepository = autorRepository;
             _suscripcionRepository = suscripcionRepository;
         }
-        
-        public override async Task<UsuarioDto> CreateAsync(CreateUsuarioDto input)
+        [HttpPost]
+        [Route("users")]
+        public async Task<UsuarioDto> CreateUserAsync(CreateUsuarioDto input)
         {
             var user = ObjectMapper.Map<Usuario>(input);
 
@@ -65,7 +66,9 @@ namespace BookReview.Usuarios
             return MapToEntityDto(user);
         }
 
-        public async Task ChangeImageUrlAsync(Guid userId, [FromBody] ChangeUsuarioImagenDto input)
+        [HttpPut]
+        [Route("users/{userId}")]
+        public async Task ChangeImageUrlAsync([FromRoute] Guid userId, [FromBody] ChangeUsuarioImagenDto input)
         {
             var user = await Repository.GetAsync(userId);
 
@@ -81,8 +84,9 @@ namespace BookReview.Usuarios
             CurrentUnitOfWork.SaveChanges();
 
         }
-
-        public async Task DeleteByIdAsync(Guid userId)
+        [HttpDelete]
+        [Route("users/{userId}")]
+        public async Task DeleteByIdAsync([FromRoute] Guid userId)
         {
             var user = await Repository.GetAsync(userId);
 
@@ -95,8 +99,9 @@ namespace BookReview.Usuarios
 
             CurrentUnitOfWork.SaveChanges();
         }
-
-        public async Task SubscribeAsync(Guid userId, int authorId)
+        [HttpPost]
+        [Route("users/{userId}/subscribe-to-author/{authorId}")]
+        public async Task SubscribeAsync([FromRoute] Guid userId, [FromRoute] int authorId)
         {
             var user = await Repository.GetAsync(userId);
 
@@ -132,8 +137,9 @@ namespace BookReview.Usuarios
 
             CurrentUnitOfWork.SaveChanges();
         }
-
-        public async Task UnSubscribeAsync(Guid userId, int authorId)
+        [HttpDelete]
+        [Route("users/{userId}/subscribe-to-author/{authorId}")]
+        public async Task UnSubscribeAsync([FromRoute] Guid userId, [FromRoute] int authorId)
         {
             var user = await Repository.GetAsync(userId);
 
@@ -160,10 +166,11 @@ namespace BookReview.Usuarios
 
             CurrentUnitOfWork.SaveChanges();
         }
-
-        public PagedResultDto<UsuarioQueryDto> GetAllUsers(PagedUsuarioResultRequestDto input)
+        [HttpGet]
+        [Route("users")]
+        public PagedResultDto<UsuarioQueryDto> GetAllUsers([FromQuery] int offset, [FromQuery] int limit)
         {
-            var usersQuery = Repository.GetAllIncluding(x => x.Autores).Skip(input.SkipCount).Take(input.MaxResultCount);
+            var usersQuery = Repository.GetAllIncluding(x => x.Autores).Skip(offset).Take(limit);
             var users = (usersQuery.Any()) ? ObjectMapper.ProjectTo<UsuarioQueryDto>(usersQuery).ToList(): new List<UsuarioQueryDto>();
             return new PagedResultDto<UsuarioQueryDto>(users.Count, users);
 

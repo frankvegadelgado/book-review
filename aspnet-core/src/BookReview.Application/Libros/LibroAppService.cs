@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -34,10 +35,10 @@ namespace BookReview.Libros
 {
     [ApiExplorerSettings(GroupName = "v1")]
     [AllowAnonymous]
-    [Route("api/v1.0/library/books")]
+    [Route("api/v1.0/library")]
     [AbpAllowAnonymous]
     [TypeFilter(typeof(AppExceptionFilter))]
-    public class LibroAppService : AsyncCrudAppService<Libro, LibroDto, int, PagedLibroResultRequestDto, CreateLibroDto, LibroDto>, ILibroAppService
+    public class LibroAppService : AsyncCrudAppServiceBase<Libro, LibroDto, int, PagedLibroResultRequestDto, CreateLibroDto, LibroDto>, ILibroAppService
     {
         private readonly IRepository<Usuario, Guid> _userRepository;
         private readonly IRepository<Review> _reviewRepository;
@@ -52,34 +53,47 @@ namespace BookReview.Libros
             _reviewRepository = reviewRepository;
         }
 
-        
-        public IQueryable<LibroQueryDto> GetAllBooks(PagedLibroResultRequestDto input)
+        [HttpGet]
+        [Route("books")]
+        public ListResultDto<LibroQueryDto> GetAllBooks([FromQuery] int? authorId,
+            [FromQuery] string editorialName,
+            [FromQuery] DateTime? before,
+            [FromQuery] DateTime? after,
+            [FromQuery] int offset,
+            [FromQuery] int limit,
+            [FromQuery] bool? sort)
         {
             var bookQuery = Repository.GetAllIncluding(x => x.Autor)
-                .WhereIf(input.AutorId.HasValue, x => x.Autor.Id == input.AutorId.Value)
-                .WhereIf(!string.IsNullOrEmpty(input.Editorial), x => x.Editorial == input.Editorial)
-                .WhereIf(input.AfterDate.HasValue, x => x.FechaPublicacion >= input.AfterDate.Value)
-                .WhereIf(input.BeforeDate.HasValue, x => x.FechaPublicacion <= input.BeforeDate.Value)
-                .Skip(input.SkipCount).Take(input.MaxResultCount);
-            var bookQuerySorted = !input.SortRanking.HasValue ? bookQuery : ((input.SortRanking.Value) ? bookQuery.OrderBy(x => (int)x.Calificacion) : bookQuery.OrderByDescending(x => (int)x.Calificacion));
+                .WhereIf(authorId.HasValue, x => x.Autor.Id == authorId.Value)
+                .WhereIf(!string.IsNullOrEmpty(editorialName), x => x.Editorial.Contains(editorialName))
+                .WhereIf(after.HasValue, x => x.FechaPublicacion >= after.Value)
+                .WhereIf(before.HasValue, x => x.FechaPublicacion <= before.Value)
+                .Skip(offset).Take(limit);
+            var bookQuerySorted = !sort.HasValue ? bookQuery : ((sort.Value) ? bookQuery.OrderBy(x => (int)x.Calificacion) : bookQuery.OrderByDescending(x => (int)x.Calificacion));
             var books = ObjectMapper.ProjectTo<LibroQueryDto>(bookQuerySorted);
-            return books;
+            return new ListResultDto<LibroQueryDto>(books.ToList());
 
         }
-
-        public IQueryable<ReviewQueryDto> GetAllReviews(int bookId, [FromBody] PagedReviewResultRequestDto input)
+        [HttpGet]
+        [Route("books/{bookId}/reviews")]
+        public ListResultDto<ReviewQueryDto> GetAllReviews([FromRoute] int bookId,
+            [FromQuery, Range(1, 5)] int? reviewType,
+            [FromQuery] bool? sort,
+            [FromQuery] int offset,
+            [FromQuery] int limit)
         {
             var reviewQuery = _reviewRepository.GetAllIncluding(x => x.Libro, x => x.Usuario)
                 .Where(x => x.Libro.Id == bookId)
-                .WhereIf(input.ReviewType.HasValue, x => x.Calificacion == (LibroClasificacion)input.ReviewType)
-                .Skip(input.SkipCount).Take(input.MaxResultCount);
-            var reviewQuerySorted = !input.SortByDateCreation.HasValue ? reviewQuery : ((input.SortByDateCreation.Value) ? reviewQuery.OrderBy(x => x.FechaCalificacion) : reviewQuery.OrderByDescending(x => x.FechaCalificacion)); 
+                .WhereIf(reviewType.HasValue, x => x.Calificacion == (LibroClasificacion)reviewType)
+                .Skip(offset).Take(limit);
+            var reviewQuerySorted = !sort.HasValue ? reviewQuery : ((sort.Value) ? reviewQuery.OrderBy(x => x.FechaCalificacion) : reviewQuery.OrderByDescending(x => x.FechaCalificacion)); 
             var reviews = ObjectMapper.ProjectTo<ReviewQueryDto>(reviewQuerySorted);
-            return reviews;
+            return new ListResultDto<ReviewQueryDto>(reviews.ToList());
 
         }
-
-        public async Task AddReviewAsync(int bookId, Guid userId, [FromBody] CreateReviewDto input)
+        [HttpPost]
+        [Route("books/{bookId}/reviews/from/users/{userId}")]
+        public async Task AddReviewAsync([FromRoute] int bookId, [FromRoute] Guid userId, [FromBody] CreateReviewDto input)
         {
             var book = await Repository.GetAsync(bookId);
 
@@ -128,7 +142,7 @@ namespace BookReview.Libros
             CurrentUnitOfWork.SaveChanges();
         }
 
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         protected virtual LibroClasificacion CalculateCalificacion(List<Review> reviews)
         {
             var rankings = reviews.Select(x => (int)x.Calificacion).ToList();

@@ -20,6 +20,7 @@ using BookReview.MultiTenancy;
 
 namespace BookReview.Controllers
 {
+    [ApiExplorerSettings(GroupName = "v2")]
     [Route("api/[controller]/[action]")]
     public class TokenAuthController : BookReviewControllerBase
     {

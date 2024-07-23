@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
@@ -11,10 +12,20 @@ namespace BookReview.Libros
 {
     public interface ILibroAppService : IAsyncCrudAppService<LibroDto, int, PagedLibroResultRequestDto, CreateLibroDto, LibroDto>
     {
-        Task AddReviewAsync(int bookId, Guid userId, [FromBody] CreateReviewDto input);
+        Task AddReviewAsync([FromRoute] int bookId, [FromRoute] Guid userId, [FromBody] CreateReviewDto input);
 
-        IQueryable<LibroQueryDto> GetAllBooks(PagedLibroResultRequestDto input);
+        ListResultDto<LibroQueryDto> GetAllBooks([FromQuery] int? authorId,
+            [FromQuery] string editorialName,
+            [FromQuery] DateTime? before,
+            [FromQuery] DateTime? after,
+            [FromQuery] int offset,
+            [FromQuery] int limit,
+            [FromQuery] bool? sort);
 
-        IQueryable<ReviewQueryDto> GetAllReviews(int bookId, [FromBody] PagedReviewResultRequestDto input);
+        ListResultDto<ReviewQueryDto> GetAllReviews([FromRoute] int bookId,
+            [FromQuery, Range(1, 5)] int? reviewType,
+            [FromQuery] bool? sort,
+            [FromQuery] int offset,
+            [FromQuery] int limit);
     }
 }
