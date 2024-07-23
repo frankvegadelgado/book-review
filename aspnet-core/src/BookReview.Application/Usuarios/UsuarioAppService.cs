@@ -89,6 +89,8 @@ namespace BookReview.Usuarios
                 throw new ErrorResponseException(HttpStatusCode.NotFound, L("UserError"), L("UserNotFound"));
             }
 
+            await _suscripcionRepository.DeleteAsync(s => s.Usuario.Id == userId);
+
             await Repository.DeleteAsync(user);
 
             CurrentUnitOfWork.SaveChanges();
