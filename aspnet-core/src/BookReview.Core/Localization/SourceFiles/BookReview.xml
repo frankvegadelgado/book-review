@@ -6,6 +6,8 @@
 	<text name="UserNotFound" value="User not found" />
 	<text name="AuthorError" value="Author error" />
 	<text name="AuthorNotFound" value="Author not found" />
+	<text name="BookError" value="Book error" />
+	<text name="BookNotFound" value="Book not found" />  
 	<text name="SupscriptionError" value="Supscription error" />
 	<text name="SupscriptionNotFound" value="Supscription not found" />
 	<text name="SupscriptionFound" value="Supscription already exists" />

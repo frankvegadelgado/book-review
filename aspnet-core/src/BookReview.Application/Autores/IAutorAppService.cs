@@ -11,6 +11,6 @@ namespace BookReview.Autores
 {
     public interface IAutorAppService : IAsyncCrudAppService<AutorDto, int, PagedAutorResultRequestDto, CreateAutorDto, AutorDto>
     {
-        Task<AutorQueryDto> GetById(int authorId);
+        Task<AutorQueryDto> GetByIdAsync(int authorId);
     }
 }

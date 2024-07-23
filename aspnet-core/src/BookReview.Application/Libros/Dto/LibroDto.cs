@@ -1,26 +1,21 @@
-﻿using Abp.Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookReview.Autores;
-using BookReview.Usuarios;
-using BookReview.Reviews;
-using BookReview.Enums;
+using Abp.Application.Services.Dto;
+using Abp.Authorization.Users;
+using Abp.AutoMapper;
 
-namespace BookReview.Libros
+namespace BookReview.Libros.Dto
 {
-    public class Libro : Entity<int>
+    [AutoMapFrom(typeof(Libro))]
+    public class LibroDto : EntityDto<int>
     {
+
         [Required]
-        [MaxLength(BookReviewConsts.MaxNameLength)]
+        [MaxLength(AbpUserBase.MaxNameLength)]
         public string Titulo { get; set; }
 
         [Required]
-        public Autor Autor { get; set; }
+        public int AutorId { get; set; }
 
         [Required]
         public string Editorial { get; set; }
@@ -31,7 +26,7 @@ namespace BookReview.Libros
 
         [Required]
         public DateTime FechaPublicacion { get; set; }
-        
+
         [Required]
         [Url]
         public string EnlaceDescarga { get; set; }
@@ -40,11 +35,7 @@ namespace BookReview.Libros
         [RegularExpression(("^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$"))]
         public string ISBN { get; set; }
 
-        public List<Review> Reviews { get; }
-
         [Required]
-        public LibroClasificacion Calificacion { get; set; }
-        
-        
+        public int Calificacion { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace BookReview.Autores
             return MapToEntityDto(author);
         }
 
-        public async Task<AutorQueryDto> GetById(int authorId)
+        public async Task<AutorQueryDto> GetByIdAsync(int authorId)
         {
             var author = await Repository.GetAsync(authorId);
 

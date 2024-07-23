@@ -25,7 +25,7 @@ namespace BookReview.Autores.Dto
                 .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.Editorial, opt => opt.Ignore())
                 .ForMember(x => x.Calificacion, opt => opt.Ignore())
-                .ForMember(x => x.Author, opt => opt.Ignore())
+                .ForMember(x => x.Autor, opt => opt.Ignore())
                 .ForMember(x => x.Reviews, opt => opt.Ignore());
 
             CreateMap<AutorQueryDto, Autor>()

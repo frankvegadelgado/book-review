@@ -61,7 +61,7 @@ namespace BookReview.Usuarios
             return MapToEntityDto(user);
         }
 
-        public async Task ChangeImageUrl(Guid userId, [FromBody] ChangeUsuarioImagenDto input)
+        public async Task ChangeImageUrlAsync(Guid userId, [FromBody] ChangeUsuarioImagenDto input)
         {
             var user = await Repository.GetAsync(userId);
 
@@ -78,7 +78,7 @@ namespace BookReview.Usuarios
 
         }
 
-        public async Task DeleteById(Guid userId)
+        public async Task DeleteByIdAsync(Guid userId)
         {
             var user = await Repository.GetAsync(userId);
 
@@ -92,7 +92,7 @@ namespace BookReview.Usuarios
             CurrentUnitOfWork.SaveChanges();
         }
 
-        public async Task Subscribe(Guid userId, int authorId)
+        public async Task SubscribeAsync(Guid userId, int authorId)
         {
             var user = await Repository.GetAsync(userId);
 
@@ -129,7 +129,7 @@ namespace BookReview.Usuarios
             CurrentUnitOfWork.SaveChanges();
         }
 
-        public async Task UnSubscribe(Guid userId, int authorId)
+        public async Task UnSubscribeAsync(Guid userId, int authorId)
         {
             var user = await Repository.GetAsync(userId);
 
